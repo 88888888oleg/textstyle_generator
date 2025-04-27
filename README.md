@@ -17,12 +17,15 @@
 
 ---
 
-📋 Requirements
-•	You must create a trigger file at lib/textstyle_generator_trigger.dart.
-•	The trigger file must contain at least:
-•	An import for package:flutter/material.dart.
-•	An import for your palette file if you want to override the default text color.
-•	A part 'generated/text_styles.g.dart'; statement.
+## 📋 Requirements
+
+You must create a trigger file at `lib/textstyle_generator_trigger.dart`.
+
+The trigger file must contain at least:
+- An import for `package:flutter/material.dart`.
+- An import for your palette file if you want to override the default text color.
+- A `part 'generated/text_styles.g.dart';` statement.
+
 
 Example trigger file:
 
@@ -48,12 +51,14 @@ dependencies:
 ```
 
 ### 2.	Place your fonts:
+```text
 assets/fonts/
 ├── Ubuntu-Regular.ttf
 ├── Ubuntu-Medium.ttf
 ├── Ubuntu-Bold.ttf
 ├── Ubuntu-BoldItalic.ttf
 └── Ubuntu-Light.ttf
+```
 
 ###	3. (Optional) Configure build.yaml
 
@@ -68,11 +73,13 @@ targets:
           max: 24
           default_palette: Palette().black()
 ```
+```text
 Default settings if omitted:
 •	font_path: assets/fonts/
 •	min: 8
 •	max: 64
 •	default_palette: const Color(0xFF000000) (pure black)
+```
 
 ###	4. Run the generator
 
@@ -109,6 +116,7 @@ FamilyName-StyleName.ttf
 ```
 
 For example:
+```text
 •	Ubuntu-Regular.ttf
 •	Ubuntu-Bold.ttf
 •	Ubuntu-Italic.ttf
@@ -117,7 +125,7 @@ For example:
 •	Ubuntu-LightItalic.ttf
 •	Ubuntu-Medium.ttf
 •	Ubuntu-MediumItalic.ttf
-
+```
 The generator analyzes the StyleName (part after the hyphen -) and assigns the correct font weight and suffix.
 
 ### ✏️ Naming rules
@@ -147,11 +155,12 @@ The generated method name pattern is:
 <baseName><fontSize>w<weight><suffix>()
 ```
 Where:
+```text
 •	baseName — the normalized family name (e.g., ubuntu)
 •	fontSize — the font size
 •	weight — the font weight
 •	suffix — the style suffix (if any)
-
+```
 📋 Example
 
 If you have a font file Ubuntu-BoldItalic.ttf,
