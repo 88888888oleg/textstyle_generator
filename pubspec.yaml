@@ -1,0 +1,26 @@
+name: textstyle_generator
+description: A package to automatically generate text styles for Flutter projects.
+version: 0.1.0
+
+homepage: https://github.com/88888888oleg/textstyle_generator
+repository: https://github.com/88888888oleg/textstyle_generator
+issue_tracker: https://github.com/88888888oleg/textstyle_generator/issues
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  build: ^2.3.1
+
+dev_dependencies:
+  build_runner: ^2.4.6
+
+builders:
+  textstyle_builder:
+    import: "package:textstyle_generator/textstyle_generator.dart"
+    builder_factories: ["textstyleBuilder"]
+    build_extensions:
+      pubspec.yaml:
+        - lib/generated/text_styles.g.dart
+    auto_apply: root_package
+    build_to: source

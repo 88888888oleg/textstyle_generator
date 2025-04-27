@@ -1,0 +1,15 @@
+targets:
+  $default:
+    builders:
+      textstyle_generator|textstyle_builder:
+        generate_for:
+          - lib/textstyle_generator_trigger.dart
+builders:
+  textstyle_builder:
+    import: "package:textstyle_generator/textstyle_generator.dart"
+    builder_factories: ["textstyleBuilder"]
+    build_extensions:
+      lib/textstyle_generator_trigger.dart:
+        - lib/generated/text_styles.g.dart
+    auto_apply: root_package
+    build_to: source

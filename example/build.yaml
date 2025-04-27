@@ -1,0 +1,9 @@
+targets:
+  $default:
+    builders:
+      textstyle_generator|textstyle_builder:
+        options:
+          font_path: assets/fonts/
+          min: 8
+          max: 24
+          default_palette: Palette().black()

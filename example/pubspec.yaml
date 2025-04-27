@@ -1,0 +1,64 @@
+name: untitled
+description: "A new Flutter project."
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+  build_runner: ^2.4.6
+  textstyle_generator: ^0.1.0
+
+flutter:
+
+  uses-material-design: true
+
+  generate: true
+  assets:
+    - assets/
+
+  fonts:
+    - family: Ubuntu-Bold
+      fonts:
+        - asset: assets/fonts/Ubuntu-Bold.ttf
+
+    - family: Ubuntu-BoldItalic
+      fonts:
+        - asset: assets/fonts/Ubuntu-BoldItalic.ttf
+
+    - family: Ubuntu-Italic
+      fonts:
+        - asset: assets/fonts/Ubuntu-Italic.ttf
+
+    - family: Ubuntu-Light
+      fonts:
+        - asset: assets/fonts/Ubuntu-Light.ttf
+
+    - family: Ubuntu-LightItalic
+      fonts:
+        - asset: assets/fonts/Ubuntu-LightItalic.ttf
+
+    - family: Ubuntu-Medium
+      fonts:
+        - asset: assets/fonts/Ubuntu-Medium.ttf
+
+    - family: Ubuntu-MediumItalic
+      fonts:
+        - asset: assets/fonts/Ubuntu-MediumItalic.ttf
+
+    - family: Ubuntu-Regular
+      fonts:
+        - asset: assets/fonts/Ubuntu-Regular.ttf
