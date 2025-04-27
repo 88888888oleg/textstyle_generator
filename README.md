@@ -112,9 +112,10 @@ Text(
   style: TextStyles.ubuntu10w300l().copyWith(wordSpacing: 2),
 ),
 ```
-
+```text
 •	c: — optional Color (overrides default palette color)
 •	h: — optional double height (line height adjustment)
+```
 
 🛠 How font naming and suffixes work
 
