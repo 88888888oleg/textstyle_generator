@@ -97,10 +97,20 @@ lib/generated/text_styles.g.dart
 ```dart
 import 'package:your_project/textstyle_generator_trigger.dart';
 
+/// You can use the generated text styles directly
+Text('Hello world!', style: TextStyles.ubuntu18w400i()),
+
+/// You can use text styles with parameters
 Text(
-  "Hello world!",
+  'Hello world!',
   style: TextStyles.style16w400m(c: Colors.blue, h: 1.5),
 );
+ 
+/// If there are not enough parameters, you can use copyWith()
+Text(
+  'Hello world!',
+  style: TextStyles.ubuntu10w300l().copyWith(wordSpacing: 2),
+),
 ```
 
 •	c: — optional Color (overrides default palette color)
