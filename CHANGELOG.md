@@ -18,3 +18,4 @@
 - Added support for dynamic output directory configuration via the output_dir option in build.yaml.
 - You can now control where the generated text_styles.g.dart file is placed without modifying the builder code.
 - Defaults to lib/generated/ if output_dir is not specified.
+- Added letterSpacing.
