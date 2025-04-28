@@ -174,21 +174,29 @@ The generator analyzes the StyleName (part after the hyphen -) and assigns the c
 ### ✏️ Naming rules
 
 ```text
-| Style keyword     | Weight  | Suffix |
-|:------------------|:--------|:-------|
-| Regular           | 400     | (empty) |
-| Italic            | 400     | i |
-| Light             | 300     | l |
-| LightItalic       | 300     | li |
-| Medium            | 500     | m |
-| MediumItalic      | 500     | mi |
-| SemiBold          | 600     | sb |
-| Bold              | 700     | b |
-| BoldItalic        | 700     | bi |
-| ExtraBold         | 800     | eb |
-| Black             | 900     | b |
-| BlackItalic       | 900     | bi |
-| ExtraLight        | 200     | l |
+| Style keyword        | Weight | Suffix |
+|:---------------------|:-------|:-------|
+| Thin                 | 100    | t      |
+| ThinItalic           | 100    | ti     |
+| ExtraLight           | 200    | l      |
+| ExtraLightItalic     | 200    | li     |
+| Light                | 300    | l      |
+| LightItalic          | 300    | li     |
+| Regular              | 400    | (empty)|
+| RegularItalic        | 400    | i      |
+| Medium               | 500    | m      |
+| MediumItalic         | 500    | mi     |
+| SemiBold             | 600    | sb     |
+| SemiBoldItalic       | 600    | sbi    |
+| Bold                 | 700    | b      |
+| BoldItalic           | 700    | bi     |
+| ExtraBold            | 800    | eb     |
+| ExtraBoldItalic      | 800    | ebi    |
+| Black                | 900    | b      |
+| BlackItalic          | 900    | bi     |
+| Heavy                | 900    | h      |
+| HeavyItalic          | 900    | hi     |
+| Italic               | 400    | i      |
 ```
 🛠 How method names are generated:
 
