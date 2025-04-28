@@ -12,11 +12,16 @@ class TextStyleBuilder implements Builder {
   @override
 
   /// Maps input files to output files for the build step.
-  Map<String, List<String>> get buildExtensions => const {
-        r'lib/textstyle_generator_trigger.dart': [
-          'lib/generated/text_styles.g.dart'
-        ],
-      };
+  @override
+  Map<String, List<String>> get buildExtensions {
+    final outputDir =
+        options.config['output_dir'] as String? ?? 'lib/generated';
+    return {
+      r'lib/textstyle_generator_trigger.dart': [
+        '$outputDir/text_styles.g.dart',
+      ],
+    };
+  }
 
   /// The default color if none is specified in the configuration.
   static const defaultColor = 'const Color(0xFF000000)';
@@ -31,6 +36,9 @@ class TextStyleBuilder implements Builder {
     /// Path to the fonts directory
     final fontPath = config['font_path'] as String? ?? 'assets/fonts/';
 
+    /// Output directory for the generated file
+    final outputDir = config['output_dir'] as String? ?? 'lib/generated';
+
     /// Minimum font size to generate
     final min = config['min'] as int? ?? 8;
 
@@ -42,8 +50,10 @@ class TextStyleBuilder implements Builder {
         config['default_palette'] as String? ?? defaultColor;
 
     /// Output file ID for the generated text styles
-    final outputId =
-        AssetId(buildStep.inputId.package, 'lib/generated/text_styles.g.dart');
+    final outputId = AssetId(
+      buildStep.inputId.package,
+      '$outputDir/text_styles.g.dart',
+    );
     final fontsDir = Directory(fontPath);
 
     /// Check if the fonts directory exists
@@ -112,12 +122,13 @@ class TextStyleBuilder implements Builder {
 
         /// Write a method for a specific text style
         buffer.writeln(
-            '  static TextStyle $methodName({Color? c, double? h}) => TextStyle(');
+            '  static TextStyle $methodName({Color? c, double? h, double? l}) => TextStyle(');
         buffer.writeln("    fontFamily: '$fontFullName',");
         buffer.writeln('    fontSize: $size,');
         buffer.writeln('    fontWeight: FontWeight.w${parsed.weight},');
         buffer.writeln('    color: c ?? $defaultColorSetting,');
         buffer.writeln('    height: h,');
+        buffer.writeln('    letterSpacing: l,');
         buffer.writeln('  );\n');
       }
     }

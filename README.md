@@ -1,12 +1,42 @@
 # textstyle_generator
 
 ⚡️ A Flutter code generator to automatically create `TextStyle` helpers for your project from your custom fonts!
+---
+## 🐌 Before
+
+```dart
+Text(
+  'Hello World',
+    style: TextStyle(
+    fontFamily: 'SF-Pro-Display-BoldItalic',
+    fontSize: 20,
+    fontWeight: FontWeight.w700,
+    color: Colors.black,
+    height: 1.2,
+    letterSpacing: 0.5,
+  ),
+)
+```
+## 🚀 After
+```dart
+Text(
+  'Hello World',
+  style: TextStyles.sfProDisplay20w700bi(c: Colors.black, h: 1.2, l: 0.5),
+)
+```
+## 🚀 And After with defaults
+```dart
+Text(
+  'Hello World',
+  style: TextStyles.sfProDisplay20w700bi(),
+)
+```
 
 ---
 
 ## ✨ Features
 
-- Generates short, clear methods like `style16w400m({Color? c, double? h})`
+- Generates short, clear methods like `style16w400m({Color? c, double? h, double? l,})`
 - Supports all font sizes (default from 8 to 64)
 - Detects and maps font weight (400, 500, 700) automatically
 - Detects suffixes based on font family names (e.g., `m`, `b`, `i`, `bi`)
@@ -72,6 +102,7 @@ targets:
           min: 10
           max: 24
           default_palette: Palette().black()
+          output_dir: lib/generated_assets/
 ```
 ```text
 Default settings if omitted:
@@ -79,6 +110,7 @@ Default settings if omitted:
 •	min: 8
 •	max: 64
 •	default_palette: const Color(0xFF000000) (pure black)
+•	output_dir: lib/generated/
 ```
 
 ###	4. Run the generator

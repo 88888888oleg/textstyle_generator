@@ -7,3 +7,4 @@ targets:
           min: 8
           max: 24
           default_palette: Palette().black()
+          output_dir: lib/generated_assets/
