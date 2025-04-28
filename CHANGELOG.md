@@ -8,3 +8,7 @@
 - Supports default text color palette customization.
 - Fully configurable via build.yaml.
 - Works with build_runner.e color configuration
+
+## 0.1.1
+
+- Fix some fonts.
