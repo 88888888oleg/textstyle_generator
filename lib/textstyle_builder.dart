@@ -10,17 +10,19 @@ class TextStyleBuilder implements Builder {
   TextStyleBuilder(this.options);
 
   @override
+
   /// Maps input files to output files for the build step.
   Map<String, List<String>> get buildExtensions => const {
-    r'lib/textstyle_generator_trigger.dart': [
-      'lib/generated/text_styles.g.dart'
-    ],
-  };
+        r'lib/textstyle_generator_trigger.dart': [
+          'lib/generated/text_styles.g.dart'
+        ],
+      };
 
   /// The default color if none is specified in the configuration.
   static const defaultColor = 'const Color(0xFF000000)';
 
   @override
+
   /// Main method to generate the output file.
   Future<void> build(BuildStep buildStep) async {
     /// Reading the configuration from build.yaml
@@ -28,17 +30,20 @@ class TextStyleBuilder implements Builder {
 
     /// Path to the fonts directory
     final fontPath = config['font_path'] as String? ?? 'assets/fonts/';
+
     /// Minimum font size to generate
     final min = config['min'] as int? ?? 8;
+
     /// Maximum font size to generate
     final max = config['max'] as int? ?? 64;
+
     /// Default text color to use
     final defaultColorSetting =
         config['default_palette'] as String? ?? defaultColor;
 
     /// Output file ID for the generated text styles
     final outputId =
-    AssetId(buildStep.inputId.package, 'lib/generated/text_styles.g.dart');
+        AssetId(buildStep.inputId.package, 'lib/generated/text_styles.g.dart');
     final fontsDir = Directory(fontPath);
 
     /// Check if the fonts directory exists
@@ -67,6 +72,7 @@ class TextStyleBuilder implements Builder {
 
     /// Buffer for writing the Dart output file
     final buffer = StringBuffer();
+
     /// Set of already generated method names to avoid duplicates
     final generatedMethodNames = <String>{};
 
@@ -74,7 +80,8 @@ class TextStyleBuilder implements Builder {
     buffer.writeln('// GENERATED CODE - DO NOT MODIFY BY HAND');
     buffer.writeln('// *****************************************************');
     buffer.writeln('//  textstyle_generator');
-    buffer.writeln('// *****************************************************\n');
+    buffer
+        .writeln('// *****************************************************\n');
     buffer.writeln("part of '../textstyle_generator_trigger.dart';\n");
 
     /// Start of the TextStyles class
@@ -86,10 +93,11 @@ class TextStyleBuilder implements Builder {
       final fontFile = fontFiles[i];
       final name = fontFile.uri.pathSegments.last.split('.').first;
       final familyParts = name.split('-');
-      final baseFamily = familyParts.first;
+      final baseFamily = familyParts.take(familyParts.length - 1).join('-');
+      final styleDescriptor =
+          familyParts.length > 1 ? familyParts.last : 'Regular';
       final fontLower = _normalizeFamilyName(baseFamily);
-      final parsed = _parseFontDescriptor(
-          familyParts.length > 1 ? familyParts[1] : 'Regular');
+      final parsed = _parseFontDescriptor(styleDescriptor);
 
       /// Generate methods for each font size
       for (var size = min; size <= max; size++) {
@@ -138,21 +146,31 @@ class TextStyleBuilder implements Builder {
   }
 
   /// Parse font descriptor into weight and suffix.
+  /// Parse font descriptor into weight and suffix correctly based on font naming.
+
   _FontParsed _parseFontDescriptor(String descriptor) {
     final desc = descriptor.toLowerCase();
-    if (desc.contains('bolditalic')) return _FontParsed(700, 'bi');
-    if (desc.contains('mediumitalic')) return _FontParsed(500, 'mi');
-    if (desc.contains('lightitalic')) return _FontParsed(300, 'li');
-    if (desc.contains('blackitalic')) return _FontParsed(900, 'bi');
-    if (desc.contains('italic')) return _FontParsed(400, 'i');
-    if (desc.contains('extrabold')) return _FontParsed(800, 'eb');
+    if (desc.contains('thinitalic')) return _FontParsed(100, 'ti');
+    if (desc.contains('thin')) return _FontParsed(100, 't');
+    if (desc.contains('extralightitalic')) return _FontParsed(200, 'li');
     if (desc.contains('extralight')) return _FontParsed(200, 'l');
+    if (desc.contains('lightitalic')) return _FontParsed(300, 'li');
     if (desc.contains('light')) return _FontParsed(300, 'l');
-    if (desc.contains('medium')) return _FontParsed(500, 'm');
-    if (desc.contains('semibold')) return _FontParsed(600, 'sb');
-    if (desc.contains('bold')) return _FontParsed(700, 'b');
-    if (desc.contains('black')) return _FontParsed(900, 'b');
+    if (desc.contains('regularitalic')) return _FontParsed(400, 'i');
     if (desc.contains('regular')) return _FontParsed(400, '');
+    if (desc.contains('mediumitalic')) return _FontParsed(500, 'mi');
+    if (desc.contains('medium')) return _FontParsed(500, 'm');
+    if (desc.contains('semibolditalic')) return _FontParsed(600, 'sbi');
+    if (desc.contains('semibold')) return _FontParsed(600, 'sb');
+    if (desc.contains('bolditalic')) return _FontParsed(700, 'bi');
+    if (desc.contains('bold')) return _FontParsed(700, 'b');
+    if (desc.contains('extrabolditalic')) return _FontParsed(800, 'ebi');
+    if (desc.contains('extrabold')) return _FontParsed(800, 'eb');
+    if (desc.contains('blackitalic')) return _FontParsed(900, 'bi');
+    if (desc.contains('black')) return _FontParsed(900, 'b');
+    if (desc.contains('heavyitalic')) return _FontParsed(900, 'hi');
+    if (desc.contains('heavy')) return _FontParsed(900, 'h');
+    if (desc.contains('italic')) return _FontParsed(400, 'i');
     return _FontParsed(400, '');
   }
 
@@ -171,33 +189,5 @@ class _FontParsed {
   final int weight;
   final String suffix;
 
-  String get original => _originalFromWeightSuffix();
-
   _FontParsed(this.weight, this.suffix);
-
-  /// Converts suffix back to a readable font name.
-  String _originalFromWeightSuffix() {
-    switch (suffix) {
-      case 'l':
-        return 'Light';
-      case 'li':
-        return 'LightItalic';
-      case 'm':
-        return 'Medium';
-      case 'mi':
-        return 'MediumItalic';
-      case 'sb':
-        return 'SemiBold';
-      case 'b':
-        return 'Bold';
-      case 'eb':
-        return 'ExtraBold';
-      case 'bi':
-        return 'BoldItalic';
-      case 'i':
-        return 'Italic';
-      default:
-        return 'Regular';
-    }
-  }
 }
