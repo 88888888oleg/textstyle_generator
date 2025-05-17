@@ -483,9 +483,10 @@ packages:
   textstyle_generator:
     dependency: "direct dev"
     description:
-      path: ".."
-      relative: true
-    source: path
+      name: textstyle_generator
+      sha256: "12a5083b6851d025f3a08f602b07e384843a68cd33f3d22b89d47f1bad6821b2"
+      url: "https://pub.dev"
+    source: hosted
     version: "0.1.2"
   timing:
     dependency: transitive
