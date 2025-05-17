@@ -1,6 +1,8 @@
 # textstyle_generator
 
-⚡️ A Flutter code generator to automatically create `TextStyle` helpers for your project from your custom fonts!
+⚡️ A powerful and flexible Flutter code generator that automates creation of `TextStyle` helpers  
+from your custom fonts — now with theming support and configurable class names via `build.yaml`!
+
 ---
 ## 🐌 Before
 
@@ -17,14 +19,18 @@ Text(
   ),
 )
 ```
+
 ## 🚀 After
+
 ```dart
 Text(
   'Hello World',
   style: TextStyles.sfProDisplay20w700bi(c: Colors.black, h: 1.2, l: 0.5),
 )
 ```
+
 ## 🚀 And After with defaults
+
 ```dart
 Text(
   'Hello World',
@@ -41,6 +47,8 @@ Text(
 - Detects and maps font weight (400, 500, 700) automatically
 - Detects suffixes based on font family names (e.g., `m`, `b`, `i`, `bi`)
 - Allows overriding the default text color using your custom palette
+- ✅ Supports Flutter theming by linking to your palette class
+- ✅ `class_name` option allows renaming the generated class (default: `TextStyles`)
 - Highly configurable via `build.yaml`
 - No need for manually writing hundreds of `TextStyle` constructors
 - Works perfectly with Flutter's `build_runner`
@@ -56,7 +64,6 @@ The trigger file must contain at least:
 - An import for your palette file if you want to override the default text color.
 - A `part 'generated/text_styles.g.dart';` statement.
 
-
 Example trigger file:
 
 ```dart
@@ -66,8 +73,10 @@ import 'palette.dart';
 
 part 'generated/text_styles.g.dart';
 ```
-If no custom palette is provided, the default text color will be const Color(0xFF000000) (pure black).
 
+If no custom palette is provided, the default text color will be `const Color(0xFF000000)` (pure black).
+
+---
 
 ## 🚀 Quick Start
 
@@ -80,7 +89,8 @@ dependencies:
   textstyle_generator: ^0.1.0
 ```
 
-### 2.	Place your fonts:
+### 2. Place your fonts:
+
 ```text
 assets/fonts/
 ├── Ubuntu-Regular.ttf
@@ -90,7 +100,7 @@ assets/fonts/
 └── Ubuntu-Light.ttf
 ```
 
-###	3. (Optional) Configure build.yaml
+### 3. (Optional) Configure build.yaml
 
 ```yaml
 targets:
@@ -103,28 +113,31 @@ targets:
           max: 24
           default_palette: Palette().black()
           output_dir: lib/generated_assets/
+          class_name: MyTextStyles
 ```
+
 ```text
 Default settings if omitted:
-•	font_path: assets/fonts/
-•	min: 8
-•	max: 64
-•	default_palette: const Color(0xFF000000) (pure black)
-•	output_dir: lib/generated/
+• font_path: assets/fonts/
+• min: 8
+• max: 64
+• default_palette: const Color(0xFF000000) (pure black)
+• output_dir: lib/generated/
+• class_name: TextStyles
 ```
 
-###	4. Run the generator
-
-Use this command to generate your TextStyles:
+### 4. Run the generator
 
 ```sh
 dart run build_runner build --delete-conflicting-outputs
 ```
 
-This will create the file:
-lib/generated/text_styles.g.dart
+This will create the file:  
+`lib/generated/text_styles.g.dart`
 
-###	5. Use it in your project
+---
+
+### 5. Use it in your project
 
 ```dart
 import 'package:your_project/textstyle_generator_trigger.dart';
@@ -137,39 +150,44 @@ Text(
   'Hello world!',
   style: TextStyles.style16w400m(c: Colors.blue, h: 1.5),
 );
- 
+
 /// If there are not enough parameters, you can use copyWith()
 Text(
   'Hello world!',
   style: TextStyles.ubuntu10w300l().copyWith(wordSpacing: 2),
 ),
 ```
+
 ```text
-•	c: — optional Color (overrides default palette color)
-•	h: — optional double height (line height adjustment)
+• c: — optional Color (overrides default palette color)
+• h: — optional double height (line height adjustment)
+• l: — optional double letter spacing
 ```
 
-🛠 How font naming and suffixes work
+---
 
-The textstyle_generator parses font file names to automatically detect font weights and styles.
-It expects your font files to follow a clear naming convention, typically in the format:
+## 🔠 How font naming and suffixes work
+
+The `textstyle_generator` parses font file names to automatically detect font weights and styles.
+
+It expects your font files to follow this format:
 
 ```text
 FamilyName-StyleName.ttf
 ```
 
 For example:
+
 ```text
-•	Ubuntu-Regular.ttf
-•	Ubuntu-Bold.ttf
-•	Ubuntu-Italic.ttf
-•	Ubuntu-BoldItalic.ttf
-•	Ubuntu-Light.ttf
-•	Ubuntu-LightItalic.ttf
-•	Ubuntu-Medium.ttf
-•	Ubuntu-MediumItalic.ttf
+Ubuntu-Regular.ttf
+Ubuntu-Bold.ttf
+Ubuntu-Italic.ttf
+Ubuntu-BoldItalic.ttf
+Ubuntu-Light.ttf
+Ubuntu-LightItalic.ttf
+Ubuntu-Medium.ttf
+Ubuntu-MediumItalic.ttf
 ```
-The generator analyzes the StyleName (part after the hyphen -) and assigns the correct font weight and suffix.
 
 ### ✏️ Naming rules
 
@@ -198,46 +216,37 @@ The generator analyzes the StyleName (part after the hyphen -) and assigns the c
 | HeavyItalic          | 900    | hi     |
 | Italic               | 400    | i      |
 ```
-🛠 How method names are generated:
 
-The generated method name pattern is:
+### 🧠 Method naming pattern:
 
 ```text
 <baseName><fontSize>w<weight><suffix>()
 ```
+
 Where:
-```text
-•	baseName — the normalized family name (e.g., ubuntu)
-•	fontSize — the font size
-•	weight — the font weight
-•	suffix — the style suffix (if any)
-```
-📋 Example
+- `baseName` — normalized font family name
+- `fontSize` — font size
+- `weight` — numeric weight (400, 500, etc.)
+- `suffix` — style suffix (optional)
 
-If you have a font file Ubuntu-BoldItalic.ttf,
-and your generator is configured for font size 18,
-the generated method will be:
-
-```dart
-TextStyles.ubuntu18w700bi()
-```
+---
 
 ## 📋 Font file to generated method mapping
 
 ```text
 | Font File                  | Example Size | Generated Method         | Meaning                               |
-|:----------------------------|:-------------|:--------------------------|:-------------------------------------|
-| Ubuntu-Regular.ttf          | 18           | ubuntu18w400()             | Regular font, weight 400             |
-| Ubuntu-Italic.ttf           | 16           | ubuntu16w400i()            | Italic font, weight 400              |
-| Ubuntu-Light.ttf            | 14           | ubuntu14w300l()            | Light font, weight 300               |
-| Ubuntu-LightItalic.ttf      | 12           | ubuntu12w300li()           | Light + Italic font, weight 300      |
-| Ubuntu-Medium.ttf           | 20           | ubuntu20w500m()            | Medium font, weight 500              |
-| Ubuntu-MediumItalic.ttf     | 18           | ubuntu18w500mi()           | Medium + Italic font, weight 500     |
-| Ubuntu-Bold.ttf             | 22           | ubuntu22w700b()            | Bold font, weight 700                |
-| Ubuntu-BoldItalic.ttf       | 24           | ubuntu24w700bi()           | Bold + Italic font, weight 700       |
-| Ubuntu-ExtraBold.ttf        | 30           | ubuntu30w800eb()           | ExtraBold font, weight 800           |
-| Ubuntu-Black.ttf            | 32           | ubuntu32w900b()            | Black font, weight 900               |
-| Ubuntu-BlackItalic.ttf      | 28           | ubuntu28w900bi()           | Black + Italic font, weight 900      |
+|:---------------------------|:-------------|:--------------------------|:--------------------------------------|
+| Ubuntu-Regular.ttf         | 18           | ubuntu18w400()            | Regular font, weight 400              |
+| Ubuntu-Italic.ttf          | 16           | ubuntu16w400i()           | Italic font, weight 400               |
+| Ubuntu-Light.ttf           | 14           | ubuntu14w300l()           | Light font, weight 300                |
+| Ubuntu-LightItalic.ttf     | 12           | ubuntu12w300li()          | Light + Italic font, weight 300       |
+| Ubuntu-Medium.ttf          | 20           | ubuntu20w500m()           | Medium font, weight 500               |
+| Ubuntu-MediumItalic.ttf    | 18           | ubuntu18w500mi()          | Medium + Italic font, weight 500      |
+| Ubuntu-Bold.ttf            | 22           | ubuntu22w700b()           | Bold font, weight 700                 |
+| Ubuntu-BoldItalic.ttf      | 24           | ubuntu24w700bi()          | Bold + Italic font, weight 700        |
+| Ubuntu-ExtraBold.ttf       | 30           | ubuntu30w800eb()          | ExtraBold font, weight 800            |
+| Ubuntu-Black.ttf           | 32           | ubuntu32w900b()           | Black font, weight 900                |
+| Ubuntu-BlackItalic.ttf     | 28           | ubuntu28w900bi()          | Black + Italic font, weight 900       |
 ```
 
 ## ☕ Support

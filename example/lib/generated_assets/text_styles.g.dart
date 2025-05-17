@@ -5,8 +5,8 @@
 
 part of '../textstyle_generator_trigger.dart';
 
-class TextStyles {
-  const TextStyles._();
+class T {
+  const T._();
 
   static TextStyle ubuntu8w500m({Color? c, double? h, double? l}) => TextStyle(
     fontFamily: 'Ubuntu-Medium',

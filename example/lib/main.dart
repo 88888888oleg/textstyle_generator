@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         /// You can use the generated text styles directly
-        title: Text(widget.title, style: TextStyles.ubuntu18w400i()),
+        title: Text(widget.title, style: T.ubuntu18w400i()),
       ),
       body: Center(
         child: Column(
@@ -71,12 +71,12 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               'You have pushed the button this many times:',
               /// You can use text styles with parameters
-              style: TextStyles.ubuntu16w400(h: 1.15),
+              style: T.ubuntu16w400(h: 1.15),
             ),
             /// If there are not enough parameters, you can use copyWith()
             Text(
               '$_counter',
-              style: TextStyles.ubuntu10w300l().copyWith(wordSpacing: 2),
+              style: T.ubuntu10w300l().copyWith(wordSpacing: 2),
             ),
           ],
         ),

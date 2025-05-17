@@ -9,8 +9,6 @@ class TextStyleBuilder implements Builder {
 
   TextStyleBuilder(this.options);
 
-  @override
-
   /// Maps input files to output files for the build step.
   @override
   Map<String, List<String>> get buildExtensions {
@@ -26,9 +24,8 @@ class TextStyleBuilder implements Builder {
   /// The default color if none is specified in the configuration.
   static const defaultColor = 'const Color(0xFF000000)';
 
-  @override
-
   /// Main method to generate the output file.
+  @override
   Future<void> build(BuildStep buildStep) async {
     /// Reading the configuration from build.yaml
     final config = options.config;
@@ -48,6 +45,9 @@ class TextStyleBuilder implements Builder {
     /// Default text color to use
     final defaultColorSetting =
         config['default_palette'] as String? ?? defaultColor;
+
+    /// Name of the generated class (new functionality)
+    final className = config['class_name'] as String? ?? 'TextStyles';
 
     /// Output file ID for the generated text styles
     final outputId = AssetId(
@@ -94,9 +94,9 @@ class TextStyleBuilder implements Builder {
         .writeln('// *****************************************************\n');
     buffer.writeln("part of '../textstyle_generator_trigger.dart';\n");
 
-    /// Start of the TextStyles class
-    buffer.writeln('class TextStyles {');
-    buffer.writeln('  const TextStyles._();\n');
+    /// Start of the configurable class (default: TextStyles)
+    buffer.writeln('class $className {');
+    buffer.writeln('  const $className._();\n');
 
     /// Iterate over all font files
     for (var i = 0; i < fontFiles.length; i++) {
@@ -105,7 +105,7 @@ class TextStyleBuilder implements Builder {
       final familyParts = name.split('-');
       final baseFamily = familyParts.take(familyParts.length - 1).join('-');
       final styleDescriptor =
-          familyParts.length > 1 ? familyParts.last : 'Regular';
+      familyParts.length > 1 ? familyParts.last : 'Regular';
       final fontLower = _normalizeFamilyName(baseFamily);
       final parsed = _parseFontDescriptor(styleDescriptor);
 
@@ -133,14 +133,14 @@ class TextStyleBuilder implements Builder {
       }
     }
 
-    /// End of the TextStyles class
+    /// End of the configurable class
     buffer.writeln('}');
 
     /// Save the final output file
     await buildStep.writeAsString(outputId, buffer.toString());
 
     log.info(
-        '[textstyle_generator] Successfully generated: lib/generated/text_styles.g.dart');
+        '[textstyle_generator] Successfully generated: $outputDir/text_styles.g.dart');
   }
 
   /// Normalize font family names into a valid Dart method naming format.
@@ -157,8 +157,6 @@ class TextStyleBuilder implements Builder {
   }
 
   /// Parse font descriptor into weight and suffix.
-  /// Parse font descriptor into weight and suffix correctly based on font naming.
-
   _FontParsed _parseFontDescriptor(String descriptor) {
     final desc = descriptor.toLowerCase();
     if (desc.contains('thinitalic')) return _FontParsed(100, 'ti');

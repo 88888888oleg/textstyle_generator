@@ -19,3 +19,8 @@
 - You can now control where the generated text_styles.g.dart file is placed without modifying the builder code.
 - Defaults to lib/generated/ if output_dir is not specified.
 - Added letterSpacing.
+
+## 0.1.3
+
+- Added support for customizing the generated class name via `class_name` option in `build.yaml`.  
+    Now you can rename `TextStyles` to anything like `MyTextStyles`, `AppTextStyles`, etc.
